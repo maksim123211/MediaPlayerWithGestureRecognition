@@ -13,11 +13,11 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
 
         public readonly Image ImagePath;
 
-        public readonly float TotalTime;
+        public readonly TotalTime TotalTime;
 
-        private float _currentTime;
+        private CurrentTime _currentTime;
 
-        public Track(Title title, string imagePath, float totalTime, float currentTime)
+        public Track(Title title, Image imagePath, TotalTime totalTime, CurrentTime currentTime)
         {
 
             Title = title;
@@ -89,6 +89,60 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
         public static implicit operator string(Image image)
         {
             return image._value;
+        }
+    }
+
+    public struct TotalTime
+    {
+        private readonly float _value;
+
+        public TotalTime(float value)
+        {
+            if (value > 0)
+            {
+                _value = value;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+        }
+
+        public static implicit operator TotalTime(float value)
+        {
+            return new TotalTime(value);
+        }
+
+        public static implicit operator float(TotalTime time)
+        {
+            return time._value;
+        }
+    }
+
+    public struct CurrentTime
+    {
+        private readonly float _value;
+
+        public CurrentTime(float value)
+        {
+            if (value > 0)
+            {
+                _value = value;
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+        }
+
+        public static implicit operator CurrentTime(float value)
+        {
+            return new CurrentTime(value);
+        }
+
+        public static implicit operator float(CurrentTime time)
+        {
+            return time._value;
         }
     }
 }
