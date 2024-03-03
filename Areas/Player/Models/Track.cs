@@ -11,7 +11,7 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
     {
         public readonly Title Title;
 
-        public readonly string ImagePath;
+        public readonly Image ImagePath;
 
         public readonly float TotalTime;
 
@@ -21,7 +21,7 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
         {
 
             Title = title;
-            ImagePath = imagePath ?? throw new ArgumentNullException(nameof(imagePath));
+            ImagePath = imagePath;
             TotalTime = totalTime;
             _currentTime = currentTime;
         }
