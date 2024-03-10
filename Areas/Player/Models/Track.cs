@@ -11,13 +11,13 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
     {
         public readonly Title Title;
 
-        public readonly Image ImagePath;
+        public readonly Path ImagePath;
 
-        public readonly TotalTime TotalTime;
+        public readonly TrackTime TotalTime;
 
-        private CurrentTime _currentTime;
+        private TrackTime _currentTime;
 
-        public Track(Title title, Image imagePath, TotalTime totalTime, CurrentTime currentTime)
+        public Track(Title title, Path imagePath, TrackTime totalTime, TrackTime currentTime = default)
         {
 
             Title = title;
@@ -25,6 +25,8 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
             TotalTime = totalTime;
             _currentTime = currentTime;
         }
+
+        public TrackTime CurrentTime => _currentTime;
 
         public void RewindTo(float timeToRewind)
         {
@@ -61,13 +63,13 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
         }
     }
 
-    public struct Image
+    public struct Path
     {
         private const string Pattern = "^(?:[a-zA-Z]:)?(\\[^\\?%*:|<>\"]+)+$";
 
         private readonly string _value;
 
-        public Image(string value)
+        public Path(string value)
         {
             Regex regex = new Regex(Pattern);
 
@@ -81,22 +83,22 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
             }
         }
         
-        public static implicit operator Image(string value)
+        public static implicit operator Path(string value)
         {
-            return new Image(value);
+            return new Path(value);
         }
 
-        public static implicit operator string(Image image)
+        public static implicit operator string(Path image)
         {
             return image._value;
         }
     }
 
-    public struct TotalTime
+    public struct TrackTime
     {
         private readonly float _value;
 
-        public TotalTime(float value)
+        public TrackTime(float value)
         {
             if (value > 0)
             {
@@ -108,39 +110,12 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
             }
         }
 
-        public static implicit operator TotalTime(float value)
+        public static implicit operator TrackTime(float value)
         {
-            return new TotalTime(value);
+            return new TrackTime(value);
         }
 
-        public static implicit operator float(TotalTime time)
-        {
-            return time._value;
-        }
-    }
-
-    public struct CurrentTime
-    {
-        private readonly float _value;
-
-        public CurrentTime(float value)
-        {
-            if (value > 0)
-            {
-                _value = value;
-            }
-            else
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-        }
-
-        public static implicit operator CurrentTime(float value)
-        {
-            return new CurrentTime(value);
-        }
-
-        public static implicit operator float(CurrentTime time)
+        public static implicit operator float(TrackTime time)
         {
             return time._value;
         }
