@@ -1,27 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MediaPlayerWithGestureRecognition.Areas.Player.Models;
-using System;
-using System.IO;
-using NAudio.Wave;
-//using static Android.Provider.MediaStore.Audio;
-//using System.Windows.Input;
-//using System.Windows.Media.Playlists;
 
 namespace MediaPlayerWithGestureRecognition.Areas.Player.ViewModels
 {
-    public enum ePlayerStatus
-    {
-        Playing,
-        Paused,
-        Stopped
-    }
-
     public sealed partial class PlayerViewModel : ObservableObject
     {
         private const float DefaultRewindTime = 5;
+        private const float DefaultVolumeChangeStep = 0.15f;
 
-        //private readonly Playlist _playlist;
+        private readonly Playlist _playlist;
 
         private readonly Track _currentTrack;
 
@@ -29,24 +17,13 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.ViewModels
         private bool _canRewindForward;
         private bool _canSetPreviousTrack;
         private bool _canSetNextTrack;
-
-        private readonly WaveOutEvent _outputDevice;
-        private AudioFileReader _audioFileReader;
-
-        ePlayerStatus PlayerStatus;
-
-        //public PlayerViewModel(Playlist playlist, Track currentTrack)
-        //{
-        //    _playlist = playlist;
-        //    _currentTrack = currentTrack;
-        //}
-
-        public PlayerViewModel()
+        
+        public PlayerViewModel(Playlist playlist, Track currentTrack)
         {
-            _outputDevice = new WaveOutEvent();
-            _outputDevice.PlaybackStopped += OnPlaybackStopped;
+            _playlist = playlist;
+            _currentTrack = currentTrack;
         }
-
+        
         public string CurrentTrackTitle => _currentTrack.Title;
 
         public float CurrentTrackTime => _currentTrack.CurrentTime;
@@ -57,75 +34,30 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.ViewModels
         //    set => _currentTrack.Volume = value;
         //}
 
-        public void OpenFile(string path)
-        {
-            var isFileValid = File.Exists(path);
-
-            if (isFileValid)
-            {
-                try
-                {
-                    _audioFileReader = new AudioFileReader(path);
-                    _outputDevice.Init(_audioFileReader);
-                    _outputDevice.Play();
-                    PlayerStatus = ePlayerStatus.Playing;
-                }
-                catch (FileNotFoundException)
-                {
-                }
-            }
-        }
-
-        public void OnPlaybackStopped(object sender, StoppedEventArgs args)
-        {
-            if (_audioFileReader is not null)
-            {
-                _audioFileReader.Dispose();
-            }
-
-            _outputDevice.Dispose();
-        }
-
         [RelayCommand]
         public void RewindBackwards()
         {
-            if (_audioFileReader != null && _audioFileReader.CurrentTime >= TimeSpan.FromSeconds(DefaultRewindTime))
-            {
-                _audioFileReader.CurrentTime = _audioFileReader.CurrentTime.Subtract(TimeSpan.FromSeconds(DefaultRewindTime));
-            }
+            var timeToRewind = _currentTrack.CurrentTime.Subtract(TimeSpan.FromSeconds(DefaultRewindTime));
+            _currentTrack.Rewind(timeToRewind);
         }
 
         [RelayCommand]
         public void RewindForward()
         {
-            if (_audioFileReader != null && _audioFileReader.CurrentTime <= _audioFileReader.TotalTime)
-            {
-                _audioFileReader.CurrentTime = _audioFileReader.CurrentTime.Add(TimeSpan.FromSeconds(DefaultRewindTime));
-            }
+            var timeToRewind = _currentTrack.CurrentTime.Add(TimeSpan.FromSeconds(DefaultRewindTime));
+            _currentTrack.Rewind(timeToRewind);
         }
 
         [RelayCommand]
         public void IncreaseVolume()
         {
-            if (_outputDevice.Volume > 0.9f)
-            {
-                _outputDevice.Volume = 1.0f;
-                return;
-            }
-
-            _outputDevice.Volume += 0.1f;
+            _currentTrack.SetVolume(_currentTrack.CurrentVolume + DefaultVolumeChangeStep);
         }
 
         [RelayCommand]
         public void DecreaseVolume()
         {
-            if (_outputDevice.Volume < 0.1f)
-            {
-                _outputDevice.Volume = 0.0f;
-                return;
-            }
-
-            _outputDevice.Volume -= 0.1f;
+            _currentTrack.SetVolume(_currentTrack.CurrentVolume - DefaultVolumeChangeStep);
         }
 
         [RelayCommand]
