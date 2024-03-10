@@ -1,6 +1,4 @@
-﻿using MediaPlayerWithGestureRecognition.Areas.Player.ViewModels;
-
-namespace MediaPlayerWithGestureRecognition
+﻿namespace MediaPlayerWithGestureRecognition
 {
     public partial class MainPage : ContentPage
     {
@@ -11,24 +9,17 @@ namespace MediaPlayerWithGestureRecognition
             InitializeComponent();
         }
 
-        private void RewindBackwardsClicked(object sender, EventArgs e)
+        private void OnCounterClicked(object sender, EventArgs e)
         {
-            PlayerViewModel.RewindBackwards();
-        }
+            count++;
 
-        private void RewindForwardClicked(object sender, EventArgs e)
-        {
-            PlayerViewModel.RewindForward();
-        }
+            if (count == 1)
+                CounterBtn.Text = $"Clicked {count} time";
+            else
+                CounterBtn.Text = $"Clicked {count} times";
 
-        private void VolumeUpClicked(object sender, EventArgs e)
-        {
-            PlayerViewModel.IncreaseVolume();
-        }
-
-        private void VolumeDownClicked(object sender, EventArgs e)
-        {
-            PlayerViewModel.DecreaseVolume();
+            SemanticScreenReader.Announce(CounterBtn.Text);
         }
     }
+
 }

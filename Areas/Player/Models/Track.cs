@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -70,12 +71,13 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
 
         public TrackPath(string fullPath)
         {
-            Regex regex = new Regex(Pattern);
-
-            if (!regex.IsMatch(fullPath))
+            if (!File.Exists(fullPath))
             {
-                _value = value;
+                throw new ArgumentException(nameof(fullPath));
             }
+
+            FullPath = fullPath;
+            FileName = Path.GetFileName(fullPath);
         }
     }
 }

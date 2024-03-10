@@ -7,26 +7,28 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.ViewModels
     public sealed partial class PlayerViewModel : ObservableObject
     {
         private const float DefaultRewindTime = 5;
-        private const float DefaultVolumeChangeStep = 0.15f;
+        private const float DefaultVolumeChangeStep = 0.1f;
 
-        private readonly Playlist _playlist;
+        private readonly PlayList _playlist;
 
         private readonly Track _currentTrack;
+
+        private readonly TrackPath _currentTrackPath;
 
         private bool _canRewindBackwards;
         private bool _canRewindForward;
         private bool _canSetPreviousTrack;
         private bool _canSetNextTrack;
         
-        public PlayerViewModel(Playlist playlist, Track currentTrack)
+        public PlayerViewModel(PlayList playlist, Track currentTrack)
         {
             _playlist = playlist;
             _currentTrack = currentTrack;
         }
         
-        public string CurrentTrackTitle => _currentTrack.Title;
+        public string CurrentTrackTitle => _currentTrackPath.FileName;
 
-        public float CurrentTrackTime => _currentTrack.CurrentTime;
+        public TimeSpan CurrentTrackTime => _currentTrack.CurrentTime;
 
         //public float Volume
         //{

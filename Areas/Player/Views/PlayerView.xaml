@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MediaPlayerWithGestureRecognition.Areas.Player.Views.PlayerView"
+             Title="PlayerView">
+    <VerticalStackLayout>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout Background="#CC000000">
+                <Label 
+                    Text="Music 1"
+                    BackgroundColor = "Purple"
+                    VerticalOptions="Center" 
+                    HorizontalOptions="Center" />
+                <Button
+                    x:Name="DashBoard"
+                    Text="DashBoard"
+                    HorizontalOptions="Fill" />
+                <Button
+                    x:Name="Settings"
+                    Text="DashBoard"
+                    HorizontalOptions="Fill" />
+                <Button
+                    x:Name="FAQ"
+                    Text="DashBoard" 
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    Command ="{ Binding RewindBackwardsCommand }"
+                    HorizontalOptions="Fill" />
+            </StackLayout>
+
+            <Grid Grid.Column="1">
+                <StackLayout Background="Black">
+                    <Label 
+                        Text="Music 1"
+                        BackgroundColor = "Purple"
+                        VerticalOptions="Center" 
+                        HorizontalOptions="Center" />
+                </StackLayout>
+            </Grid>
+
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
