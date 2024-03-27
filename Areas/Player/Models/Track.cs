@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using Microsoft.Maui.Storage;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,19 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
 {
     public sealed class Track
     {
+        public readonly string Title;
+
         private readonly IWavePlayer _audioFilePlayer;
         private readonly AudioFileReader _audioFile;
 
         public Track(string filePath)
         {
+            if (!File.Exists(filePath))
+            {
+                throw new ArgumentException(nameof(filePath));
+            }
+
+            Title = Path.GetFileName(filePath);
             _audioFile = new AudioFileReader(filePath);
             _audioFilePlayer = new WaveOutEvent();
             _audioFilePlayer.Init(_audioFile);
@@ -61,23 +70,4 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.Models
         }
     }
 
-    public sealed class TrackPath
-    {
-        public readonly string FilePath;
-        public readonly string FileName;
-        public readonly string FileExtensions;
-
-        public readonly string FullPath;
-
-        public TrackPath(string fullPath)
-        {
-            if (!File.Exists(fullPath))
-            {
-                throw new ArgumentException(nameof(fullPath));
-            }
-
-            FullPath = fullPath;
-            FileName = Path.GetFileName(fullPath);
-        }
-    }
 }

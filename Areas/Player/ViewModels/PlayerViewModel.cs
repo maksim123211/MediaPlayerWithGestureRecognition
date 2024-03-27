@@ -13,8 +13,6 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.ViewModels
 
         private readonly Track _currentTrack;
 
-        private readonly TrackPath _currentTrackPath;
-
         private bool _canRewindBackwards;
         private bool _canRewindForward;
         private bool _canSetPreviousTrack;
@@ -26,7 +24,7 @@ namespace MediaPlayerWithGestureRecognition.Areas.Player.ViewModels
             _currentTrack = currentTrack;
         }
         
-        public string CurrentTrackTitle => _currentTrackPath.FileName;
+        public string CurrentTrackTitle => _currentTrack.Title;
 
         public TimeSpan CurrentTrackTime => _currentTrack.CurrentTime;
 

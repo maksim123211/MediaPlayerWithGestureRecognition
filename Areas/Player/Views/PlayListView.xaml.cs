@@ -1,8 +1,8 @@
 namespace MediaPlayerWithGestureRecognition.Areas.Player.Views;
 
-public partial class PlayerView : ContentView
+public partial class PlayListView : ContentView
 {
-	public PlayerView()
+	public PlayListView()
 	{
 		InitializeComponent();
 	}

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Material.Components.Maui.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace MediaPlayerWithGestureRecognition
 {
@@ -8,6 +9,7 @@ namespace MediaPlayerWithGestureRecognition
         {
             var builder = MauiApp.CreateBuilder();
             builder
+                .UseMaterialComponents()
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
